@@ -1,22 +1,28 @@
 import { useState } from "react";
 import { fourByFourGridData } from "../data/gridDatas";
+import { GridLayout } from "../layout";
 import { randomIndexGenerator } from "../utils/randomIndexGenerator";
 
 //*TODO: Create a separate grid renderer layout that can be reused at any component
 
 const FourByFourGridDisplay = () => {
-  const [gridArr] = useState(fourByFourGridData);
+  const [grid] = useState(fourByFourGridData);
 
   return (
-    <div className="flex flex-col gap-5">
-      {gridArr?.map((row, rowIndex) => (
-        <div className="flex" key={randomIndexGenerator(rowIndex)}>
+    <GridLayout flexDirection="col">
+      {grid?.map((row, rowIndex) => (
+        <GridLayout flexDirection="row" key={randomIndexGenerator(rowIndex)}>
           {row.map((col, colIndex) => (
-            <div key={randomIndexGenerator(colIndex)}>{col}</div>
+            <div
+              className="bg-dark-blue p-3 rounded-full h-16 w-16 text-center text-white text-3xl"
+              key={randomIndexGenerator(colIndex)}
+            >
+              {col}
+            </div>
           ))}
-        </div>
+        </GridLayout>
       ))}
-    </div>
+    </GridLayout>
   );
 };
 
