@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { fourByFourGridData } from "../data/gridDatas";
 import { GridLayout } from "../layout";
 import { randomIndexGenerator } from "../utils/randomIndexGenerator";
@@ -32,29 +32,13 @@ const FourByFourGridDisplay = () => {
   };
 
   const selectNumber = (selectedNumberData: SavedGridNumbers) => {
-    const selectedGridNumberArr = gridOptions.selectedGridNumber;
     setGridOptions({
       ...gridOptions,
-      selectedGridNumber: [...selectedGridNumberArr, selectedNumberData],
+      selectedGridNumber: [
+        ...gridOptions.selectedGridNumber,
+        selectedNumberData,
+      ],
     });
-
-    if (hasTwoSelectedGridNumber) {
-      const firstSelectedGridNumber = selectedGridNumberArr[0].selectedNumber;
-      const secondSelectedGridNumber = selectedGridNumberArr[1].selectedNumber;
-      const gridNumbersMatched =
-        firstSelectedGridNumber === secondSelectedGridNumber;
-
-      if (!gridNumbersMatched) {
-        clearSelectedGridNumberArr();
-      }
-      setGridOptions({
-        ...gridOptions,
-        matchedNumbers: [
-          ...gridOptions.matchedNumbers,
-          ...selectedGridNumberArr,
-        ],
-      });
-    }
   };
 
   const showGridNumber = (
@@ -77,9 +61,31 @@ const FourByFourGridDisplay = () => {
     return "";
   };
 
+  useEffect(() => {
+    if (hasTwoSelectedGridNumber) {
+      const selectedGridNumberArr = gridOptions.selectedGridNumber;
+
+      const firstSelectedGridNumber = selectedGridNumberArr[0].selectedNumber;
+      const secondSelectedGridNumber = selectedGridNumberArr[1].selectedNumber;
+      const gridNumbersMatched =
+        firstSelectedGridNumber === secondSelectedGridNumber;
+
+      if (gridNumbersMatched) {
+        setGridOptions({
+          selectedGridNumber: [],
+          matchedNumbers: [
+            ...gridOptions.matchedNumbers,
+            ...selectedGridNumberArr,
+          ],
+        });
+      } else {
+        clearSelectedGridNumberArr();
+      }
+    }
+  }, [gridOptions.selectedGridNumber.length]);
+
   return (
     <>
-      {JSON.stringify(gridOptions)}
       <GridLayout flexDirection="col">
         {fourByFourGridData?.map((row, rowIndex) => (
           <GridLayout flexDirection="row" key={randomIndexGenerator(rowIndex)}>
@@ -92,7 +98,7 @@ const FourByFourGridDisplay = () => {
                 <button
                   disabled={hasTwoSelectedGridNumber}
                   onClick={() => selectNumber(selectedNumberData)}
-                  className="bg-dark-blue p-3 rounded-full h-16 w-16 text-center text-white text-3xl cursor-pointer"
+                  className="bg-dark-blue p-3 rounded-full h-16 w-16 text-center text-white text-3xl cursor-pointer disabled:cursor-default"
                   key={randomIndexGenerator(colIndex)}
                 >
                   {showGridNumber(colIndex, number)}
