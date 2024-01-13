@@ -142,7 +142,7 @@ const FourByFourGridDisplay = () => {
                   className={`p-3 rounded-full h-16 w-16 text-center text-white text-3xl cursor-pointer disabled:cursor-default ${getGridOptionButtonColor(
                     colIndex,
                     number
-                  )}`}
+                  )} hover:scale-110 duration-200`}
                   key={randomIndexGenerator(colIndex)}
                 >
                   {showGridNumber(colIndex, number)}
