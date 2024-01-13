@@ -1,7 +1,11 @@
 import { GameTimerAndMovesLayout } from "../layout";
 
-const MoveCounter = () => {
-  return <GameTimerAndMovesLayout label="Moves" value={0} />;
+type MoveCounterProps = {
+  movesMade: number;
+};
+
+const MoveCounter = ({ movesMade }: MoveCounterProps) => {
+  return <GameTimerAndMovesLayout label="Moves" value={movesMade} />;
 };
 
 export default MoveCounter;

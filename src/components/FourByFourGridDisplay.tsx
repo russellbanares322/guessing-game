@@ -13,12 +13,14 @@ type SavedGridNumbers = {
 type TGridOptions = {
   selectedGridNumber: SavedGridNumbers[] | [];
   matchedNumbers: SavedGridNumbers[] | [];
+  movesMade: number;
 };
 
 const FourByFourGridDisplay = () => {
   const [gridOptions, setGridOptions] = useState<TGridOptions>({
     selectedGridNumber: [],
     matchedNumbers: [],
+    movesMade: 0,
   });
   const hasTwoSelectedGridNumber = gridOptions.selectedGridNumber.length === 2;
 
@@ -36,6 +38,7 @@ const FourByFourGridDisplay = () => {
   const selectNumber = (selectedNumberData: SavedGridNumbers) => {
     setGridOptions({
       ...gridOptions,
+      movesMade: gridOptions.movesMade + 1,
       selectedGridNumber: [
         ...gridOptions.selectedGridNumber,
         selectedNumberData,
@@ -68,6 +71,7 @@ const FourByFourGridDisplay = () => {
 
       if (gridNumbersMatched) {
         setGridOptions({
+          ...gridOptions,
           selectedGridNumber: [],
           matchedNumbers: [
             ...gridOptions.matchedNumbers,
@@ -154,7 +158,7 @@ const FourByFourGridDisplay = () => {
       </GridLayout>
       <div className="flex items-center justify-between gap-6 mt-16">
         <GameTimer />
-        <MoveCounter />
+        <MoveCounter movesMade={gridOptions.movesMade} />
       </div>
     </div>
   );
