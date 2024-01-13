@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { fourByFourGridData } from "../data/gridDatas";
 import { GridLayout } from "../layout";
 import { randomIndexGenerator } from "../utils/randomIndexGenerator";
+import GameTimer from "./GameTimer";
+import MoveCounter from "./MoveCounter";
 
 type SavedGridNumbers = {
   id: number;
@@ -44,7 +46,7 @@ const FourByFourGridDisplay = () => {
   const showGridNumber = (
     selectedNumberIndex: number,
     selectedNumber: number
-  ) => {
+  ): string | number => {
     const isGridNumberPresent = gridOptions.matchedNumbers.some(
       (num) =>
         num.id === selectedNumberIndex && num.selectedNumber === selectedNumber
@@ -108,6 +110,10 @@ const FourByFourGridDisplay = () => {
           </GridLayout>
         ))}
       </GridLayout>
+      <div className="flex items-center justify-center gap-2 mt-5">
+        <GameTimer />
+        <MoveCounter />
+      </div>
     </>
   );
 };

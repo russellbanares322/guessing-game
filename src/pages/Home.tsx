@@ -3,7 +3,7 @@ import { FourByFourGridDisplay } from "../components";
 const Home = () => {
   return (
     <div className="mt-10">
-      <div className="flex items-center justify-center">
+      <div className="flex flex-col items-center justify-center">
         <FourByFourGridDisplay />
       </div>
     </div>
