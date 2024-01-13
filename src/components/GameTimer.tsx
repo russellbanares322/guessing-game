@@ -1,5 +1,7 @@
+import { GameTimerAndMovesLayout } from "../layout";
+
 const GameTimer = () => {
-  return <div>GameTimer</div>;
+  return <GameTimerAndMovesLayout label="Time" value="0:00" />;
 };
 
 export default GameTimer;

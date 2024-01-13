@@ -1,5 +1,7 @@
+import { GameTimerAndMovesLayout } from "../layout";
+
 const MoveCounter = () => {
-  return <div>MoveCounter</div>;
+  return <GameTimerAndMovesLayout label="Moves" value={0} />;
 };
 
 export default MoveCounter;

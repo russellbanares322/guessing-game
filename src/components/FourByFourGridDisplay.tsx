@@ -87,7 +87,7 @@ const FourByFourGridDisplay = () => {
   }, [gridOptions.selectedGridNumber.length]);
 
   return (
-    <>
+    <div>
       <GridLayout flexDirection="col">
         {fourByFourGridData?.map((row, rowIndex) => (
           <GridLayout flexDirection="row" key={randomIndexGenerator(rowIndex)}>
@@ -110,11 +110,11 @@ const FourByFourGridDisplay = () => {
           </GridLayout>
         ))}
       </GridLayout>
-      <div className="flex items-center justify-center gap-2 mt-5">
+      <div className="flex items-center justify-between gap-6 mt-16">
         <GameTimer />
         <MoveCounter />
       </div>
-    </>
+    </div>
   );
 };
 

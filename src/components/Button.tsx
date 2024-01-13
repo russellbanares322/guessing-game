@@ -13,7 +13,7 @@ const Button = ({ children, ghost = false }: ButtonProps) => {
 
   return (
     <button
-      className={`py-2 px-6 rounded-full font-bold ${getButtonColorClassName()}`}
+      className={`py-2 px-6 text-sm rounded-full font-bold ${getButtonColorClassName()}`}
     >
       {children}
     </button>
