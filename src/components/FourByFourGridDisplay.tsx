@@ -47,16 +47,10 @@ const FourByFourGridDisplay = () => {
     selectedNumberIndex: number,
     selectedNumber: number
   ): string | number => {
-    const isGridNumberPresent = gridOptions.matchedNumbers.some(
-      (num) =>
-        num.id === selectedNumberIndex && num.selectedNumber === selectedNumber
-    );
-    const isGridNumberSelected = gridOptions.selectedGridNumber.some(
-      (num) =>
-        num.id === selectedNumberIndex && num.selectedNumber === selectedNumber
-    );
-
-    if (isGridNumberPresent || isGridNumberSelected) {
+    if (
+      isOptionSaved(selectedNumberIndex, selectedNumber) ||
+      isOptionSelected(selectedNumberIndex, selectedNumber)
+    ) {
       return selectedNumber;
     }
 
@@ -86,21 +80,69 @@ const FourByFourGridDisplay = () => {
     }
   }, [gridOptions.selectedGridNumber.length]);
 
+  const isOptionSelected = (
+    selectedNumberIndex: number,
+    selectedNumber: number
+  ): boolean => {
+    const optionCurrentlySelected = gridOptions.selectedGridNumber.some(
+      (num) =>
+        num.id === selectedNumberIndex && num.selectedNumber === selectedNumber
+    );
+
+    if (optionCurrentlySelected) {
+      return true;
+    }
+
+    return false;
+  };
+
+  const isOptionSaved = (
+    selectedNumberIndex: number,
+    selectedNumber: number
+  ): boolean => {
+    const optionSaved = gridOptions.matchedNumbers.some(
+      (num) =>
+        num.id === selectedNumberIndex && num.selectedNumber === selectedNumber
+    );
+
+    if (optionSaved) {
+      return true;
+    }
+    return false;
+  };
+
+  const getGridOptionButtonColor = (
+    selectedNumberIndex: number,
+    selectedNumber: number
+  ): string => {
+    if (isOptionSaved(selectedNumberIndex, selectedNumber)) {
+      return "bg-ghost-blue";
+    } else if (isOptionSelected(selectedNumberIndex, selectedNumber)) {
+      return "bg-orange";
+    } else {
+      return "bg-dark-blue";
+    }
+  };
+
   return (
     <div>
       <GridLayout flexDirection="col">
         {fourByFourGridData?.map((row, rowIndex) => (
           <GridLayout flexDirection="row" key={randomIndexGenerator(rowIndex)}>
             {row.map((number, colIndex) => {
-              const selectedNumberData = {
+              const selectedNumberData: SavedGridNumbers = {
                 id: colIndex,
                 selectedNumber: number,
               };
+
               return (
                 <button
                   disabled={hasTwoSelectedGridNumber}
                   onClick={() => selectNumber(selectedNumberData)}
-                  className="bg-dark-blue p-3 rounded-full h-16 w-16 text-center text-white text-3xl cursor-pointer disabled:cursor-default"
+                  className={`p-3 rounded-full h-16 w-16 text-center text-white text-3xl cursor-pointer disabled:cursor-default ${getGridOptionButtonColor(
+                    colIndex,
+                    number
+                  )}`}
                   key={randomIndexGenerator(colIndex)}
                 >
                   {showGridNumber(colIndex, number)}

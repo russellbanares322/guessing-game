@@ -9,7 +9,7 @@ const GameTimerAndMovesLayout = ({
 }: GameTimerAndMovesLayoutProps) => {
   return (
     <div className="bg-ghost-blue py-3 px-3 rounded-md w-full flex justify-between items-center">
-      <span className="text-sm text-light-blue">{label}</span>{" "}
+      <span className="text-xs text-light-blue">{label}</span>{" "}
       <span className="text-xl font-semibold text-dark-blue">{value}</span>
     </div>
   );
