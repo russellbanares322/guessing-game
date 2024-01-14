@@ -3,7 +3,7 @@ import { Home } from "./pages";
 
 const App = () => {
   return (
-    <div className="max-w-[1140px] w-full mx-auto py-14">
+    <div className="max-w-[1140px] w-full mx-auto py-14 p-4">
       <Navbar />
       <Home />
     </div>

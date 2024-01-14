@@ -3,6 +3,7 @@ import { fourByFourGridData } from "../data/gridDatas";
 import { GridLayout } from "../layout";
 import { randomIndexGenerator } from "../utils/randomIndexGenerator";
 import GameTimer from "./GameTimer";
+import Modal from "./Modal";
 import MoveCounter from "./MoveCounter";
 
 type SavedGridNumbers = {
@@ -14,6 +15,7 @@ type TGridOptions = {
   selectedGridNumber: SavedGridNumbers[] | [];
   matchedNumbers: SavedGridNumbers[] | [];
   movesMade: number;
+  showGameResultModal: boolean;
 };
 
 const FourByFourGridDisplay = () => {
@@ -21,8 +23,12 @@ const FourByFourGridDisplay = () => {
     selectedGridNumber: [],
     matchedNumbers: [],
     movesMade: 0,
+    showGameResultModal: false,
   });
   const hasTwoSelectedGridNumber = gridOptions.selectedGridNumber.length === 2;
+  const flattenGridData = fourByFourGridData.flat();
+  const allOptionsMatched =
+    gridOptions.matchedNumbers.length === flattenGridData.length;
 
   const clearSelectedGridNumberArr = () => {
     const selectedGridNumberRemoverTimeout = setTimeout(() => {
@@ -30,7 +36,7 @@ const FourByFourGridDisplay = () => {
         ...gridOptions,
         selectedGridNumber: [],
       });
-    }, 2000);
+    }, 1000);
 
     return () => clearTimeout(selectedGridNumberRemoverTimeout);
   };
@@ -59,30 +65,6 @@ const FourByFourGridDisplay = () => {
 
     return "";
   };
-
-  useEffect(() => {
-    if (hasTwoSelectedGridNumber) {
-      const selectedGridNumberArr = gridOptions.selectedGridNumber;
-
-      const firstSelectedGridNumber = selectedGridNumberArr[0].selectedNumber;
-      const secondSelectedGridNumber = selectedGridNumberArr[1].selectedNumber;
-      const gridNumbersMatched =
-        firstSelectedGridNumber === secondSelectedGridNumber;
-
-      if (gridNumbersMatched) {
-        setGridOptions({
-          ...gridOptions,
-          selectedGridNumber: [],
-          matchedNumbers: [
-            ...gridOptions.matchedNumbers,
-            ...selectedGridNumberArr,
-          ],
-        });
-      } else {
-        clearSelectedGridNumberArr();
-      }
-    }
-  }, [gridOptions.selectedGridNumber.length]);
 
   const isOptionSelected = (
     selectedNumberIndex: number,
@@ -128,6 +110,56 @@ const FourByFourGridDisplay = () => {
     }
   };
 
+  const openGameResultModal = () => {
+    setGridOptions({
+      ...gridOptions,
+      showGameResultModal: true,
+    });
+  };
+
+  const closeGameResultModal = () => {
+    clearGridOptionsState();
+  };
+
+  useEffect(() => {
+    if (hasTwoSelectedGridNumber) {
+      const selectedGridNumberArr = gridOptions.selectedGridNumber;
+
+      const firstSelectedGridNumber = selectedGridNumberArr[0].selectedNumber;
+      const secondSelectedGridNumber = selectedGridNumberArr[1].selectedNumber;
+      const gridNumbersMatched =
+        firstSelectedGridNumber === secondSelectedGridNumber;
+
+      if (gridNumbersMatched) {
+        setGridOptions({
+          ...gridOptions,
+          selectedGridNumber: [],
+          matchedNumbers: [
+            ...gridOptions.matchedNumbers,
+            ...selectedGridNumberArr,
+          ],
+        });
+      } else {
+        clearSelectedGridNumberArr();
+      }
+    }
+  }, [gridOptions.selectedGridNumber.length]);
+
+  useEffect(() => {
+    if (allOptionsMatched) {
+      openGameResultModal();
+    }
+  }, [gridOptions.matchedNumbers]);
+
+  const clearGridOptionsState = () => {
+    setGridOptions({
+      selectedGridNumber: [],
+      matchedNumbers: [],
+      movesMade: 0,
+      showGameResultModal: false,
+    });
+  };
+
   return (
     <div>
       <GridLayout flexDirection="col">
@@ -146,7 +178,9 @@ const FourByFourGridDisplay = () => {
                   className={`p-3 rounded-full h-16 w-16 text-center text-white text-3xl cursor-pointer disabled:cursor-default ${getGridOptionButtonColor(
                     colIndex,
                     number
-                  )} hover:scale-110 duration-200`}
+                  )} ${
+                    !hasTwoSelectedGridNumber && "hover:scale-110"
+                  } duration-200`}
                   key={randomIndexGenerator(colIndex)}
                 >
                   {showGridNumber(colIndex, number)}
@@ -160,6 +194,12 @@ const FourByFourGridDisplay = () => {
         <GameTimer />
         <MoveCounter movesMade={gridOptions.movesMade} />
       </div>
+      <Modal
+        open={gridOptions.showGameResultModal}
+        onClose={closeGameResultModal}
+      >
+        <h1 className="text-dark-blue font-bold text-xl">You did it!</h1>
+      </Modal>
     </div>
   );
 };
