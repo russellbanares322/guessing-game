@@ -1,3 +1,4 @@
 import Home from "./home";
+import GameOptions from "./GameOptions";
 
-export { Home }
+export { Home, GameOptions }

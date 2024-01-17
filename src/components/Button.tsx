@@ -1,19 +1,39 @@
+type ButtonTypes = "ghost" | "primary" | "orange";
+type ButtonSizes = "small" | "medium" | "large";
+
 type ButtonProps = {
   children: React.ReactNode;
-  ghost?: boolean;
+  size?: ButtonSizes;
+  type: ButtonTypes;
 };
 
-const Button = ({ children, ghost = false }: ButtonProps) => {
+const Button = ({ children, size = "small", type }: ButtonProps) => {
+  const getButtonSizeClassName = () => {
+    const buttonSizesMap = {
+      small: "text-sm",
+      medium: "text-base",
+      large: "text-lg",
+    };
+
+    const selectedButtonSize = buttonSizesMap[size];
+
+    return selectedButtonSize;
+  };
+
   const getButtonColorClassName = () => {
-    if (ghost) {
-      return "bg-ghost-blue text-dark-blue";
-    }
-    return "bg-orange text-white";
+    const buttonTypesMap = {
+      ghost: "bg-ghost-blue text-dark-blue",
+      primary: "bg-dark-blue text-white",
+      orange: "bg-orange text-white",
+    };
+    const selectedButtonType = buttonTypesMap[type];
+
+    return selectedButtonType;
   };
 
   return (
     <button
-      className={`py-2 px-6 text-sm rounded-full font-bold ${getButtonColorClassName()}`}
+      className={`py-2 w-full px-6 rounded-full font-bold whitespace-nowrap ${getButtonColorClassName()} ${getButtonSizeClassName()}`}
     >
       {children}
     </button>
