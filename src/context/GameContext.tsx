@@ -4,6 +4,7 @@ import {
   NumberOfPlayerOptions,
   ThemeOptions,
 } from "../data/gameOptions";
+import { throwContextError } from "../utils/throwContextError";
 
 type GameContextProviderProp = {
   children: React.ReactNode;
@@ -13,19 +14,12 @@ type GameContextValues = {
   selectedGameTheme: ThemeOptions;
   selectedNumberOfPlayers: NumberOfPlayerOptions;
   selectedGridSize: GridSizeOptions;
+  handleSelectGameTheme: (gameTheme: ThemeOptions) => void;
+  handleSelectNumberOfPlayers: (numberOfPlayers: NumberOfPlayerOptions) => void;
+  handleSelectGridSize: (gridSize: GridSizeOptions) => void;
 };
 
-export const GameContext = createContext<GameContextValues>({
-  selectedGameTheme: "Numbers",
-  selectedNumberOfPlayers: 1,
-  selectedGridSize: "4x4",
-});
-
-export const useGameContext = () => {
-  const gameContextData = useContext(GameContext);
-  if (!gameContextData) return;
-  return gameContextData;
-};
+export const GameContext = createContext<GameContextValues | null>(null);
 
 const GameContextProvider = ({ children }: GameContextProviderProp) => {
   const [selectedGameTheme, setSelectedGameTheme] =
@@ -66,3 +60,11 @@ const GameContextProvider = ({ children }: GameContextProviderProp) => {
 };
 
 export default GameContextProvider;
+
+export const useGameContext = () => {
+  const gameContextData = useContext(GameContext);
+  if (!gameContextData) {
+    return throwContextError("useGameContext", "GameContextProvider");
+  }
+  return gameContextData;
+};
