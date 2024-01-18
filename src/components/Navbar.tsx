@@ -5,8 +5,12 @@ const Navbar = () => {
     <nav className="flex justify-between items-center">
       <p className="text-2xl font-extrabold text-dark-blue">memory</p>
       <div className="flex items-center justify-center gap-3">
-        <Button type="orange">Restart</Button>
-        <Button type="ghost">New Game</Button>
+        <Button onClick={() => console.log("Restart")} type="orange">
+          Restart
+        </Button>
+        <Button onClick={() => console.log("New Game")} type="ghost">
+          New Game
+        </Button>
       </div>
     </nav>
   );
