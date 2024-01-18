@@ -5,9 +5,10 @@ type ButtonProps = {
   children: React.ReactNode;
   size?: ButtonSizes;
   type: ButtonTypes;
+  onClick: () => void;
 };
 
-const Button = ({ children, size = "small", type }: ButtonProps) => {
+const Button = ({ children, size = "small", type, onClick }: ButtonProps) => {
   const getButtonSizeClassName = () => {
     const buttonSizesMap = {
       small: "text-sm",
@@ -33,6 +34,7 @@ const Button = ({ children, size = "small", type }: ButtonProps) => {
 
   return (
     <button
+      onClick={onClick}
       className={`py-2 w-full px-6 rounded-full font-bold whitespace-nowrap ${getButtonColorClassName()} ${getButtonSizeClassName()}`}
     >
       {children}

@@ -1,7 +1,10 @@
+import { useGameContext } from "../context/GameContext";
 import { numberOfPlayerOptions } from "../data/gameOptions";
 import Button from "./Button";
 
 const SelectNumberOfPlayers = () => {
+  const { handleSelectNumberOfPlayers, isOptionSelected } = useGameContext();
+
   return (
     <div>
       <p className="text-light-blue text-sm font-semibold">
@@ -9,7 +12,14 @@ const SelectNumberOfPlayers = () => {
       </p>
       <div className="flex justify-between w-full items-center gap-5 mt-3">
         {numberOfPlayerOptions.map((option) => (
-          <Button size="medium" key={option} type="primary">
+          <Button
+            onClick={() => handleSelectNumberOfPlayers(option)}
+            size="medium"
+            key={option}
+            type={
+              isOptionSelected("numberOfPlayers", option) ? "primary" : "ghost"
+            }
+          >
             {option}
           </Button>
         ))}
