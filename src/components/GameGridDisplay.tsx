@@ -6,6 +6,8 @@ import GameTimer from "./GameTimer";
 import Modal from "./Modal";
 import MoveCounter from "./MoveCounter";
 
+//*TODO: Refactor selecting of grid item function use row and col index;
+
 type SavedGridNumbers = {
   id: number;
   selectedNumber: number;
@@ -17,6 +19,8 @@ type TGridOptions = {
   movesMade: number;
   showGameResultModal: boolean;
 };
+
+// Array.from({length: 4}).map(() => Array.from({length: 4}).fill(true));
 
 const GameGridDisplay = () => {
   const [gridOptions, setGridOptions] = useState<TGridOptions>({
