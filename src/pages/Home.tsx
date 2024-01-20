@@ -1,4 +1,4 @@
-import { FourByFourGridDisplay, Navbar } from "../components";
+import { GameGridDisplay, Navbar } from "../components";
 
 const Home = () => {
   return (
@@ -6,7 +6,7 @@ const Home = () => {
       <Navbar />
       <div className="mt-10">
         <div className="flex flex-col items-center justify-center">
-          <FourByFourGridDisplay />
+          <GameGridDisplay />
         </div>
       </div>
     </div>

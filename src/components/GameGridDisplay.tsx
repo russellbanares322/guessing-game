@@ -18,7 +18,7 @@ type TGridOptions = {
   showGameResultModal: boolean;
 };
 
-const FourByFourGridDisplay = () => {
+const GameGridDisplay = () => {
   const [gridOptions, setGridOptions] = useState<TGridOptions>({
     selectedGridNumber: [],
     matchedNumbers: [],
@@ -204,4 +204,4 @@ const FourByFourGridDisplay = () => {
   );
 };
 
-export default FourByFourGridDisplay;
+export default GameGridDisplay;
