@@ -20,15 +20,19 @@ type TGridOptions = {
   showGameResultModal: boolean;
 };
 
-// Array.from({length: 4}).map(() => Array.from({length: 4}).fill(true));
-
 const GameGridDisplay = () => {
+  const [revealedGrid, setRevealedGrid] = useState(
+    Array.from({ length: fourByFourGridData.length }).map(() =>
+      Array.from({ length: fourByFourGridData[0].length }).fill(true)
+    )
+  );
   const [gridOptions, setGridOptions] = useState<TGridOptions>({
     selectedGridNumber: [],
     matchedNumbers: [],
     movesMade: 0,
     showGameResultModal: false,
   });
+
   const hasTwoSelectedGridNumber = gridOptions.selectedGridNumber.length === 2;
   const flattenGridData = fourByFourGridData.flat();
   const allOptionsMatched =
