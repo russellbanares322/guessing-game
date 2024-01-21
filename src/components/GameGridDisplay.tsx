@@ -33,6 +33,11 @@ const GameGridDisplay = () => {
     showGameResultModal: false,
   });
 
+  // const testSelectGridNumber = (rowIndex: number, colIndex: number) => {
+  //   const selectedGrid = revealedGrid[rowIndex][colIndex] === true;
+  // setRevealedGrid(selectedGrid)
+  // }
+
   const hasTwoSelectedGridNumber = gridOptions.selectedGridNumber.length === 2;
   const flattenGridData = fourByFourGridData.flat();
   const allOptionsMatched =
