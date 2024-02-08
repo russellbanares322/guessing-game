@@ -26,6 +26,9 @@ const GameGridDisplay = () => {
       Array.from({ length: fourByFourGridData[0].length }).fill(true)
     )
   );
+  const [previousSelectedGrid, setPreviousSelectedGrid] = useState<
+    number | null
+  >(null);
   const [gridOptions, setGridOptions] = useState<TGridOptions>({
     selectedGridNumber: [],
     matchedNumbers: [],
