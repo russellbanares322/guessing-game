@@ -7,7 +7,7 @@ const Navbar = () => {
   return (
     <nav className="flex justify-between items-center">
       <p className="text-2xl font-extrabold text-dark-blue">memory</p>
-      <div className="flex items-center justify-center gap-3">
+      <div className="flex items-center justify-center gap-4">
         <Button onClick={() => console.log("Restart")} type="orange">
           Restart
         </Button>
