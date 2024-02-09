@@ -6,8 +6,6 @@ import GameTimer from "./GameTimer";
 import Modal from "./Modal";
 import MoveCounter from "./MoveCounter";
 
-//*TODO: Refactor selecting of grid item function use row and col index;
-
 type SavedGridNumbers = {
   id: number;
   selectedNumber: number;
@@ -21,25 +19,12 @@ type TGridOptions = {
 };
 
 const GameGridDisplay = () => {
-  const [revealedGrid, setRevealedGrid] = useState(
-    Array.from({ length: fourByFourGridData.length }).map(() =>
-      Array.from({ length: fourByFourGridData[0].length }).fill(true)
-    )
-  );
-  const [previousSelectedGrid, setPreviousSelectedGrid] = useState<
-    number | null
-  >(null);
   const [gridOptions, setGridOptions] = useState<TGridOptions>({
     selectedGridNumber: [],
     matchedNumbers: [],
     movesMade: 0,
     showGameResultModal: false,
   });
-
-  // const testSelectGridNumber = (rowIndex: number, colIndex: number) => {
-  //   const selectedGrid = revealedGrid[rowIndex][colIndex] === true;
-  // setRevealedGrid(selectedGrid)
-  // }
 
   const hasTwoSelectedGridNumber = gridOptions.selectedGridNumber.length === 2;
   const flattenGridData = fourByFourGridData.flat();
