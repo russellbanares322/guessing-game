@@ -13,6 +13,10 @@ const GameGridDisplay = () => {
   const [prevClicked, setPrevClicked] = useState<number | null>(null);
   const [revealedGrid, setRevealedGrid] = useState([]);
 
+  const booleanArr = Array.from({ length: gridOptions.length }).map(() =>
+    Array.from({ length: gridOptions[0].length }).fill(false)
+  );
+
   const showItem = (rowIndex: number, colIndex: number) => {
     const selectedGridOption = gridOptions[rowIndex][colIndex];
     setPrevClicked(selectedGridOption);
