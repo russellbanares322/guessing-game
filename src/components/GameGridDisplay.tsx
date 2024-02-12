@@ -7,19 +7,22 @@ import Modal from "./Modal";
 import MoveCounter from "./MoveCounter";
 
 const GameGridDisplay = () => {
-  const [gridOptions, setGridOptions] = useState(fourByFourGridData);
+  const [gridItems, setGridItems] = useState(fourByFourGridData);
+  const [revealedGrid, setRevealedGrid] = useState(
+    Array.from({ length: gridItems.length }).map(() =>
+      Array.from({ length: gridItems[0].length }).fill(false)
+    )
+  );
   const [showGameResultModal, setShowGameResultModal] = useState(false);
   const [movesMade, setMovesMade] = useState(0);
   const [prevClicked, setPrevClicked] = useState<number | null>(null);
-  const [revealedGrid, setRevealedGrid] = useState([]);
-
-  const booleanArr = Array.from({ length: gridOptions.length }).map(() =>
-    Array.from({ length: gridOptions[0].length }).fill(false)
-  );
 
   const showItem = (rowIndex: number, colIndex: number) => {
-    const selectedGridOption = gridOptions[rowIndex][colIndex];
-    setPrevClicked(selectedGridOption);
+    const newRevealedGrid = [...revealedGrid];
+    const clickedGridItem = gridItems[rowIndex][colIndex];
+    setPrevClicked(clickedGridItem);
+    newRevealedGrid[rowIndex][colIndex] = true;
+    setRevealedGrid(newRevealedGrid);
   };
 
   const closeGameResultModal = () => {
@@ -29,7 +32,7 @@ const GameGridDisplay = () => {
   return (
     <div>
       <GridLayout flexDirection="col">
-        {gridOptions?.map((row, rowIndex) => (
+        {gridItems?.map((row, rowIndex) => (
           <GridLayout flexDirection="row" key={randomIndexGenerator(rowIndex)}>
             {row.map((number, colIndex) => (
               <button
@@ -37,7 +40,7 @@ const GameGridDisplay = () => {
                 className={`p-3 rounded-full h-16 w-16 text-center text-white text-3xl cursor-pointer disabled:cursor-default bg-dark-blue duration-200 hover:scale-110`}
                 key={randomIndexGenerator(colIndex)}
               >
-                {number}
+                {revealedGrid[rowIndex][colIndex] ? number : ""}
               </button>
             ))}
           </GridLayout>
