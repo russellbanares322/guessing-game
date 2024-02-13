@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { fourByFourGridData } from "../data/gridDatas";
 import { GridLayout } from "../layout";
 import { randomIndexGenerator } from "../utils/randomIndexGenerator";
@@ -7,7 +7,7 @@ import Modal from "./Modal";
 import MoveCounter from "./MoveCounter";
 
 const GameGridDisplay = () => {
-  const [gridItems, setGridItems] = useState(fourByFourGridData);
+  const [gridItems] = useState(fourByFourGridData);
   const [revealedGrid, setRevealedGrid] = useState(
     Array.from({ length: gridItems.length }).map(() =>
       Array.from({ length: gridItems[0].length }).fill(false)
@@ -15,14 +15,51 @@ const GameGridDisplay = () => {
   );
   const [showGameResultModal, setShowGameResultModal] = useState(false);
   const [movesMade, setMovesMade] = useState(0);
-  const [prevClicked, setPrevClicked] = useState<number | null>(null);
+  const [prevClickedGridItems, setPrevClickedGridItems] = useState<number[]>(
+    []
+  );
+  const [selectedRowIndex, setSelectedRowIndex] = useState<number | null>(null);
+  const [selectedColIndex, setSelectedColIndex] = useState<number | null>(null);
 
   const showItem = (rowIndex: number, colIndex: number) => {
-    const newRevealedGrid = [...revealedGrid];
     const clickedGridItem = gridItems[rowIndex][colIndex];
-    setPrevClicked(clickedGridItem);
+    setSelectedRowIndex(rowIndex);
+    setSelectedColIndex(colIndex);
+
+    const newRevealedGrid = [...revealedGrid];
     newRevealedGrid[rowIndex][colIndex] = true;
     setRevealedGrid(newRevealedGrid);
+    setPrevClickedGridItems([...prevClickedGridItems, clickedGridItem]);
+    incrementMovesMade();
+  };
+
+  useEffect(() => {
+    if (selectedRowIndex === null && selectedColIndex === null) return;
+
+    if (prevClickedGridItems.length === 2) {
+      setTimeout(() => {
+        const isNumberMatched = prevClickedGridItems.reduce((a, b) =>
+          Number(a === b)
+        );
+        if (!isNumberMatched) {
+          newRevealedGrid[selectedRowIndex][selectedColIndex] = false;
+          setRevealedGrid(newRevealedGrid);
+          clearPreviousSelectedItems();
+        } else {
+          newRevealedGrid[selectedRowIndex][selectedColIndex] = true;
+          setRevealedGrid(newRevealedGrid);
+          clearPreviousSelectedItems();
+        }
+      }, 500);
+    }
+  }, []);
+
+  const clearPreviousSelectedItems = () => {
+    setPrevClickedGridItems([]);
+  };
+
+  const incrementMovesMade = () => {
+    setMovesMade(movesMade + 1);
   };
 
   const closeGameResultModal = () => {
