@@ -35,7 +35,7 @@ const GameGridDisplay = () => {
 
   useEffect(() => {
     if (selectedRowIndex === null && selectedColIndex === null) return;
-
+    const newRevealedGrid = [...revealedGrid];
     if (prevClickedGridItems.length === 2) {
       setTimeout(() => {
         const isNumberMatched = prevClickedGridItems.reduce((a, b) =>
