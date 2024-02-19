@@ -18,7 +18,19 @@ const GameGridDisplay = () => {
   const [prevClickedGridItem, setPrevClickedGridItem] = useState<number | null>(
     null
   );
+  const [gameTimerOptions, setGameTimerOptions] = useState({
+    startTime: false,
+    minutes: 0,
+    seconds: 0,
+  });
   const [disableGridButtons, setDisableGridButtons] = useState(false);
+
+  const startGameTime = () => {
+    setGameTimerOptions({
+      ...gameTimerOptions,
+      startTime: true,
+    });
+  };
 
   const showItem = (rowIndex: number, colIndex: number) => {
     const clickedGridItem = gridItems[rowIndex][colIndex];
@@ -59,6 +71,24 @@ const GameGridDisplay = () => {
     setShowGameResultModal(false);
   };
 
+  useEffect(() => {
+    if (gameTimerOptions.startTime) {
+      const isSecondReachedMaximum = gameTimerOptions.seconds === 60;
+      const gameTimeInterval = setInterval(() => {
+        setGameTimerOptions((prev) => ({ ...prev, seconds: prev.seconds + 1 }));
+
+        if (isSecondReachedMaximum) {
+          setGameTimerOptions((prev) => ({
+            ...prev,
+            seconds: 0,
+            minutes: prev.minutes + 1,
+          }));
+        }
+      }, 1000);
+      return () => clearInterval(gameTimeInterval);
+    }
+  }, [gameTimerOptions.startTime, gameTimerOptions.seconds]);
+
   return (
     <div>
       <GridLayout flexDirection="col">
@@ -80,7 +110,10 @@ const GameGridDisplay = () => {
         ))}
       </GridLayout>
       <div className="flex items-center justify-between gap-6 mt-16">
-        <GameTimer />
+        <GameTimer
+          minutes={gameTimerOptions.minutes}
+          seconds={gameTimerOptions.seconds}
+        />
         <MoveCounter movesMade={movesMade} />
       </div>
       <Modal open={showGameResultModal} onClose={closeGameResultModal}>
