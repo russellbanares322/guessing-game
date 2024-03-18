@@ -39,6 +39,7 @@ const GameGridDisplay = () => {
     newRevealedGrid[rowIndex][colIndex] = true;
     setRevealedGrid(newRevealedGrid);
     setPrevClickedGridItem(clickedGridItem);
+    startGameTime();
 
     if (hasPrevClickedGridItem) {
       const matchedSelectedGridItem = prevClickedGridItem === clickedGridItem;
