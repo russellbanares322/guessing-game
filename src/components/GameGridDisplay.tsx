@@ -6,13 +6,13 @@ import GameTimer from "./GameTimer";
 import Modal from "./Modal";
 import MoveCounter from "./MoveCounter";
 
+const dummy2dGrid = Array.from({ length: fourByFourGridData.length }).map(() =>
+  Array.from({ length: fourByFourGridData[0].length }).fill(false)
+);
+
 const GameGridDisplay = () => {
   const [gridItems] = useState(fourByFourGridData);
-  const [revealedGrid, setRevealedGrid] = useState(
-    Array.from({ length: gridItems.length }).map(() =>
-      Array.from({ length: gridItems[0].length }).fill(false)
-    )
-  );
+  const [revealedGrid, setRevealedGrid] = useState(dummy2dGrid);
   const [showGameResultModal, setShowGameResultModal] = useState(false);
   const [movesMade, setMovesMade] = useState(0);
   const [prevClickedGridItem, setPrevClickedGridItem] = useState<number | null>(
