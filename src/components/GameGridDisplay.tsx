@@ -11,7 +11,7 @@ const dummy2dGrid = Array.from({ length: fourByFourGridData.length }).map(() =>
 );
 
 const GameGridDisplay = () => {
-  const [gridItems] = useState(fourByFourGridData);
+  const [gridItems, setGridItems] = useState(fourByFourGridData);
   const [revealedGrid, setRevealedGrid] = useState(dummy2dGrid);
   const [showGameResultModal, setShowGameResultModal] = useState(false);
   const [movesMade, setMovesMade] = useState(0);
@@ -26,47 +26,53 @@ const GameGridDisplay = () => {
   const [disableGridButtons, setDisableGridButtons] = useState(false);
 
   const startGameTime = () => {
-    setGameTimerOptions({
-      ...gameTimerOptions,
-      startTime: true,
-    });
-  };
-
-  const showItem = (rowIndex: number, colIndex: number) => {
-    const clickedGridItem = gridItems[rowIndex][colIndex];
-    const hasPrevClickedGridItem = prevClickedGridItem !== null;
-    const newRevealedGrid = [...revealedGrid];
-    newRevealedGrid[rowIndex][colIndex] = true;
-    setRevealedGrid(newRevealedGrid);
-    setPrevClickedGridItem(clickedGridItem);
-    startGameTime();
-
-    if (hasPrevClickedGridItem) {
-      const matchedSelectedGridItem = prevClickedGridItem === clickedGridItem;
-      handleDisableGridButtons();
-      if (!matchedSelectedGridItem) {
-        setTimeout(() => {
-          setPrevClickedGridItem(null);
-          handleEnableGridButtons();
-          newRevealedGrid[rowIndex][colIndex] = false;
-          setRevealedGrid(newRevealedGrid);
-        }, 700);
-      }
+    if (!gameTimerOptions.startTime) {
+      setGameTimerOptions({
+        ...gameTimerOptions,
+        startTime: true,
+      });
     }
-    incrementMovesMade();
-  };
-
-  const handleDisableGridButtons = () => {
-    setDisableGridButtons(true);
-  };
-
-  const handleEnableGridButtons = () => {
-    setDisableGridButtons(false);
   };
 
   const incrementMovesMade = () => {
     setMovesMade(movesMade + 1);
   };
+
+  const showItem = (rowIndex: number, colIndex: number) => {
+    // Reveal grid item using rowIndex and colIndex
+    const newRevealedGrid = [...revealedGrid];
+    newRevealedGrid[rowIndex][colIndex] = true;
+    const clickedGridItem = gridItems[rowIndex][colIndex];
+
+    setRevealedGrid(newRevealedGrid);
+
+    // This will check if we already store a previously clicked grid item, if we have don't save it again so we can use it for comparison
+    if (prevClickedGridItem === null) {
+      setPrevClickedGridItem(clickedGridItem);
+    }
+
+    // This will handle the visiblity of grid item if its matched or not
+    setTimeout(() => {
+      if (clickedGridItem !== prevClickedGridItem) {
+        setPrevClickedGridItem(null);
+        newRevealedGrid[rowIndex][colIndex] = false;
+        setRevealedGrid(newRevealedGrid);
+      }
+    }, 1000);
+
+    // Game time will start once user reveals an item
+    startGameTime();
+    // Increment move counter everytime user reveals an item
+    incrementMovesMade();
+  };
+
+  // const handleDisableGridButtons = () => {
+  //   setDisableGridButtons(true);
+  // };
+
+  // const handleEnableGridButtons = () => {
+  //   setDisableGridButtons(false);
+  // };
 
   const closeGameResultModal = () => {
     setShowGameResultModal(false);
@@ -92,6 +98,7 @@ const GameGridDisplay = () => {
 
   return (
     <div>
+      {JSON.stringify(revealedGrid)}
       <GridLayout flexDirection="col">
         {gridItems?.map((row, rowIndex) => (
           <GridLayout flexDirection="row" key={randomIndexGenerator(rowIndex)}>
