@@ -98,7 +98,6 @@ const GameGridDisplay = () => {
 
   return (
     <div>
-      {JSON.stringify(revealedGrid)}
       <GridLayout flexDirection="col">
         {gridItems?.map((row, rowIndex) => (
           <GridLayout flexDirection="row" key={randomIndexGenerator(rowIndex)}>
