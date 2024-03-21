@@ -14,10 +14,9 @@ const GameGridDisplay = () => {
   const [gridItems, setGridItems] = useState(fourByFourGridData);
   const [revealedGrid, setRevealedGrid] = useState(dummy2dGrid);
   const [showGameResultModal, setShowGameResultModal] = useState(false);
+  const [matchedItems, setMatchedItems] = useState<number[]>([]);
+  const [itemsToCompare, setItemsToCompare] = useState<number[]>([]);
   const [movesMade, setMovesMade] = useState(0);
-  const [prevClickedGridItem, setPrevClickedGridItem] = useState<number | null>(
-    null
-  );
   const [gameTimerOptions, setGameTimerOptions] = useState({
     startTime: false,
     minutes: 0,
@@ -43,32 +42,28 @@ const GameGridDisplay = () => {
     const newRevealedGrid = [...revealedGrid];
     newRevealedGrid[rowIndex][colIndex] = true;
     const clickedGridItem = gridItems[rowIndex][colIndex];
+    const isItemsBeingCompared = itemsToCompare.length === 2;
 
     setRevealedGrid(newRevealedGrid);
-
-    // This will check if we already store a previously clicked grid item, if we have don't save it again so we can use it for comparison
-    if (prevClickedGridItem === null) {
-      setPrevClickedGridItem(clickedGridItem);
-    }
-
-    // This will handle the visiblity of grid item if its matched or not
-    setTimeout(() => {
-      if (clickedGridItem !== prevClickedGridItem) {
-        setPrevClickedGridItem(null);
-        newRevealedGrid[rowIndex][colIndex] = false;
-        setRevealedGrid(newRevealedGrid);
-      }
-    }, 1000);
+    setItemsToCompare([...itemsToCompare, clickedGridItem]);
 
     // Game time will start once user reveals an item
     startGameTime();
     // Increment move counter everytime user reveals an item
     incrementMovesMade();
+
+    if (isItemsBeingCompared) {
+      handleDisableGridButtons();
+      compareClickedGridItems();
+    }
   };
 
-  // const handleDisableGridButtons = () => {
-  //   setDisableGridButtons(true);
-  // };
+  const compareClickedGridItems = () => {
+    // Do the logic for comparing selected grid item
+  };
+  const handleDisableGridButtons = () => {
+    setDisableGridButtons(true);
+  };
 
   // const handleEnableGridButtons = () => {
   //   setDisableGridButtons(false);
