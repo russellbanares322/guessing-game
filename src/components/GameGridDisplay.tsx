@@ -54,20 +54,33 @@ const GameGridDisplay = () => {
 
     if (isItemsBeingCompared) {
       handleDisableGridButtons();
-      compareClickedGridItems();
+      compareClickedGridItems(rowIndex, colIndex);
     }
   };
 
-  const compareClickedGridItems = () => {
+  const compareClickedGridItems = (rowIndex: number, colIndex: number) => {
     // Do the logic for comparing selected grid item
+    const isClickedItemsMatched = itemsToCompare.reduce((a, b) =>
+      Number(a === b)
+    );
+
+    setTimeout(() => {
+      if (!isClickedItemsMatched) {
+        setItemsToCompare([]);
+        handleEnableGridButtons();
+      }
+
+      setMatchedItems([...matchedItems, ...itemsToCompare]);
+    }, 2000);
   };
+
   const handleDisableGridButtons = () => {
     setDisableGridButtons(true);
   };
 
-  // const handleEnableGridButtons = () => {
-  //   setDisableGridButtons(false);
-  // };
+  const handleEnableGridButtons = () => {
+    setDisableGridButtons(false);
+  };
 
   const closeGameResultModal = () => {
     setShowGameResultModal(false);
