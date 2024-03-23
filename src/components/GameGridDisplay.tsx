@@ -70,6 +70,7 @@ const GameGridDisplay = () => {
         handleEnableGridButtons();
       }
 
+      // Implement checking of clicked grid items
       setMatchedItems([...matchedItems, ...itemsToCompare]);
     }, 2000);
   };
