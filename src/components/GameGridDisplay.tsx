@@ -54,11 +54,11 @@ const GameGridDisplay = () => {
 
     if (isItemsBeingCompared) {
       handleDisableGridButtons();
-      compareClickedGridItems(rowIndex, colIndex);
+      compareClickedGridItems();
     }
   };
 
-  const compareClickedGridItems = (rowIndex: number, colIndex: number) => {
+  const compareClickedGridItems = () => {
     // Do the logic for comparing selected grid item
     const isClickedItemsMatched = itemsToCompare.reduce((a, b) =>
       Number(a === b)
@@ -90,7 +90,7 @@ const GameGridDisplay = () => {
   useEffect(() => {
     if (gameTimerOptions.startTime) {
       const isSecondReachedMaximum = gameTimerOptions.seconds === 60;
-      const gameTimeInterval = setInterval(() => {
+      setInterval(() => {
         setGameTimerOptions((prev) => ({ ...prev, seconds: prev.seconds + 1 }));
 
         if (isSecondReachedMaximum) {
@@ -101,7 +101,6 @@ const GameGridDisplay = () => {
           }));
         }
       }, 1000);
-      return () => clearInterval(gameTimeInterval);
     }
   }, [gameTimerOptions.startTime, gameTimerOptions.seconds]);
 
