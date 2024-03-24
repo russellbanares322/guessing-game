@@ -68,10 +68,10 @@ const GameGridDisplay = () => {
       if (!isClickedItemsMatched) {
         setItemsToCompare([]);
         handleEnableGridButtons();
+      } else {
+        // Implement checking of clicked grid items
+        setMatchedItems([...matchedItems, ...itemsToCompare]);
       }
-
-      // Implement checking of clicked grid items
-      setMatchedItems([...matchedItems, ...itemsToCompare]);
     }, 2000);
   };
 
